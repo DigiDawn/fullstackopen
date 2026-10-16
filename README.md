@@ -1,121 +1,184 @@
-# Full Stack Open — Exercises
+# Full Stack Open — Exercise Solutions
 
-My exercise projects for the University of Helsinki's [Full Stack Open](https://fullstackopen.com/en/) course.
+My exercise solutions for [Full Stack Open](https://fullstackopen.com/en/), the University of Helsinki's course on modern web development.
+
+This repository is organized by course part. Each application lives in its own folder and can be run independently.
 
 ## Repository structure
 
 ```text
 fullstackopen/
-├── README.md
+├── part0/
+│   ├── 0.4-new-note.md
+│   ├── 0.5-spa.md
+│   └── 0.6-new-note-spa.md
 ├── part1/
 │   ├── courseinfo/
 │   ├── unicafe/
 │   └── anecdotes/
 ├── part2/
-│   ├── courseinfo/
-│   ├── phonebook/
-│   └── countries/
-└── part3/
-    ├── README.md
-    ├── phonebook-frontend/
-    └── phonebook-backend/
+├── part3/
+└── part4/
+    └── bloglist/
+        ├── controllers/
+        ├── models/
+        ├── tests/
+        ├── utils/
+        ├── app.js
+        ├── index.js
+        └── package.json
 ```
 
-## Part 1 — React basics (Exercises 1.1–1.14)
+> This is the intended repository layout. The availability and completion status of Parts 2 and 3 are not verified here. Part 4 is supplied as a separate backend project.
 
-- `part1/courseinfo` — exercises 1.1–1.5 (final version)
-- `part1/unicafe` — exercises 1.6–1.11 (final version)
-- `part1/anecdotes` — exercises 1.12–1.14 (final version)
+## Part 0 — Fundamentals of Web Apps
 
-Each folder is an independent Vite React application. To run one:
+Sequence diagrams showing browser–server communication:
+
+| Exercise | Description |
+|---|---|
+| 0.4 | Creating a new note in the traditional web app |
+| 0.5 | Loading the single-page app (SPA) |
+| 0.6 | Creating a new note in the SPA |
+
+The diagrams are written in Mermaid inside Markdown files. They can be previewed in GitHub.
+
+## Part 1 — Introduction to React
+
+Three independent React applications:
+
+| Folder | Exercises | Description |
+|---|---|---|
+| `courseinfo` | 1.1–1.5 | Course information, reusable components, and exercise totals |
+| `unicafe` | 1.6–1.11 | Feedback buttons and statistics, including average and positive percentage |
+| `anecdotes` | 1.12–1.14 | Random anecdotes, voting, and most-voted anecdote |
+
+To run an application, open its folder and use:
 
 ```bash
-cd part1/unicafe
 npm install
 npm run dev
 ```
 
-Run the same commands in `courseinfo` and `anecdotes` to test them.
+Open the local URL shown by Vite in the terminal. Run the commands separately in each application folder.
 
-## Part 2 — Communicating with a server (Exercises 2.1–2.20)
+## Part 2 — Communicating with Server
 
-- `part2/courseinfo` — exercises 2.1–2.5: rendering course information
-- `part2/phonebook` — exercises 2.6–2.17: forms, filtering, server communication, and notifications
-- `part2/countries` — exercises 2.18–2.20: country data and weather information
+Part 2 covers rendering collections, forms, server communication, and styling React applications. Add each exercise application's folder here as you complete it. This README does not claim any Part 2 exercises are finished.
 
-These are independent React/Vite applications. Install dependencies and run `npm run dev` inside the application you want to start. The Phonebook uses a JSON Server during Part 2; the Countries project needs a configured weather API key. See each project's configuration for details. Do not commit `.env` files containing keys.
+## Part 3 — Programming a Server with Node.js and Express
 
-## Part 3 — Node.js, Express, and MongoDB (Exercises 3.1–3.22)
+Part 3 covers Express APIs, MongoDB, validation, deployment, and linting. Add the actual Part 3 project folder and any deployment link when available. This README does not claim a verified Part 3 deployment.
 
-Part 3 continues the Phonebook application with a database-backed API and a React frontend. **Only the Phonebook frontend and backend belong in `part3/`.**
+## Part 4 — Testing Express Servers, User Administration
 
-- `part3/phonebook-frontend` — React/Vite interface for the Phonebook
-- `part3/phonebook-backend` — Express REST API, Mongoose model, `mongo.js` command-line database tool, validation, logging, error handling, and ESLint
+**Application:** `part4/bloglist`  
+**Exercises:** 4.1–4.23 (including starred exercises in the supplied project)
 
-### Requirements
+A REST API for blog posts, built with Node.js, Express, MongoDB/Mongoose, and automated tests. It includes blog creation and editing, user accounts, login, JWT authentication, and restrictions on deleting other users' blogs.
 
-- Node.js 22.3.0 or newer and npm
-- MongoDB Atlas cluster, database user, and network access configuration
-- A `MONGODB_URI` environment variable for the backend (keep credentials private)
+### Part 4 setup
 
-### Run Part 3 locally
-
-In one terminal:
+Requirements: Node.js 22+, npm, and a MongoDB connection (local or MongoDB Atlas).
 
 ```bash
-cd part3/phonebook-backend
+cd part4/bloglist
 npm install
+```
+
+Copy `.env.example` to `.env` and configure the values:
+
+```dotenv
+PORT=3003
+MONGODB_URI=mongodb://127.0.0.1:27017/bloglist
+TEST_MONGODB_URI=mongodb://127.0.0.1:27017/bloglist_test
+SECRET=replace-with-a-long-random-secret
+```
+
+The MongoDB URLs above are examples. If using Atlas, substitute your actual connection strings. Keep `.env` out of version control. **Never point the test connection to your development or production database:** tests reset collections.
+
+Start the backend:
+
+```bash
 npm run dev
 ```
 
-In a second terminal:
+Run checks:
 
 ```bash
-cd part3/phonebook-frontend
-npm install
-npm run dev
-```
-
-The frontend uses Vite's proxy to reach the Express API at `http://localhost:3001/api/persons`. The backend also exposes `http://localhost:3001/info`.
-
-### Build and serve the full application
-
-Install dependencies in both folders first. Then, from `part3/phonebook-backend`:
-
-```bash
-npm run build:ui
-npm start
-```
-
-Visit `http://localhost:3001` to use the production frontend served by Express.
-
-### Database command-line tool (Exercise 3.12)
-
-See `part3/phonebook-backend/.env.example` and its README for the MongoDB URI template needed by `mongo.js`.
-
-```bash
-cd part3/phonebook-backend
-node mongo.js yourpassword "Anna" "040-1234556"
-node mongo.js yourpassword
-```
-
-Never commit database passwords, `.env` files, or other secrets.
-
-### Linting
-
-```bash
-cd part3/phonebook-backend
+npm run check
+npm run test:unit
+npm test
 npm run lint
 ```
 
-### Deployment (Exercises 3.10, 3.11, 3.21)
+The full test suite requires MongoDB and installed dependencies. Passing syntax or unit tests alone does not prove the integration tests pass.
 
-Deploy the **backend** to a service such as Render or Fly.io and configure the MongoDB connection string as a secret. Build the React frontend and have Express serve its production files; do not deploy the frontend as a separate service for these exercises.
+### Part 4 API endpoints
 
-**Live application URL:** _Add after deployment and verification._
+| Method | Endpoint | Description | Authorization |
+|---|---|---|---|
+| GET | `/api/blogs` | List blogs | Public |
+| GET | `/api/blogs/:id` | Get a blog | Public |
+| POST | `/api/blogs` | Create a blog | Bearer token |
+| PUT | `/api/blogs/:id` | Update a blog | Public in this exercise implementation |
+| DELETE | `/api/blogs/:id` | Delete a blog | Creator's Bearer token |
+| GET | `/api/users` | List users | Public |
+| POST | `/api/users` | Register a user | Public |
+| POST | `/api/login` | Log in and receive token | Public |
 
-The Part 3 source is prepared for exercises 3.1–3.22; database connectivity, full builds, lint execution, and live deployment must still be verified.
+Example registration request:
+
+```bash
+curl -X POST http://localhost:3003/api/users \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"alice","name":"Alice","password":"secret123"}'
+```
+
+Example login request:
+
+```bash
+curl -X POST http://localhost:3003/api/login \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"alice","password":"secret123"}'
+```
+
+For authenticated endpoints, send `Authorization: Bearer YOUR_TOKEN`.
+
+### Part 4 exercise map
+
+| Exercises | Implementation |
+|---|---|
+| 4.1–4.2 | Blog API and modular Express project structure |
+| 4.3–4.7 | Blog helper functions and unit tests |
+| 4.8–4.12 | SuperTest API tests, JSON IDs, defaults, and validation |
+| 4.13–4.14 | Delete and update operations with tests |
+| 4.15–4.17 | User registration, validation, and blog ownership |
+| 4.18–4.19 | JWT login and authenticated blog creation |
+| 4.20–4.22 | Token/user middleware and creator-only deletion |
+| 4.23 | Authentication-aware API tests |
+
+The Part 4 application is **backend-only**; it does not need React or JSX.
+
+## Technologies
+
+- **Frontend:** React, JavaScript, Vite, HTML, CSS (Part 1)
+- **Backend:** Node.js, Express (Part 4)
+- **Database:** MongoDB, Mongoose (Part 4)
+- **Authentication:** JSON Web Tokens, password hashing (Part 4)
+- **Testing:** Node.js test runner, SuperTest (Part 4)
+
+## Exercise submission
+
+Submit exercise counts through the [Full Stack Open submission system](https://studies.cs.helsinki.fi/stats/courses/fullstackopen). Review the [official course instructions](https://fullstackopen.com/en/) for current requirements. This repository README does not indicate that exercises have been submitted or accepted.
 
 ## Notes
 
-Do not commit `node_modules/`, credentials, or local `.env` files. Review, test, and understand your work before marking exercises completed in the course submission system.
+- Each application should have its own `package.json` where applicable.
+- Do not commit `.env`, API secrets, database passwords, or `node_modules`.
+- Run backend integration tests against a dedicated test database.
+- Update this README as new parts are completed and verified.
+
+## Course
+
+[Full Stack Open — University of Helsinki](https://fullstackopen.com/en/)
