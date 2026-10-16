@@ -9,6 +9,6 @@ router.post('/', async (req, res) => {
   const valid = user && typeof password === 'string' && await bcrypt.compare(password, user.passwordHash)
   if (!valid) return res.status(401).json({ error: 'invalid username or password' })
   const token = jwt.sign({ username: user.username, id: user.id }, config.SECRET, { expiresIn: '1h' })
-  res.json({ token, username: user.username, name: user.name })
+  res.json({ token, id: user.id, username: user.username, name: user.name })
 })
 module.exports = router
