@@ -1,54 +1,33 @@
-# Full Stack Open — Exercises and Projects
+# Full Stack Open — Exercises
 
-React and full-stack development exercises from the University of Helsinki's [Full Stack Open](https://fullstackopen.com/en/) course.
+My exercise projects for the University of Helsinki's [Full Stack Open](https://fullstackopen.com/en/) course.
 
-This repository contains separate applications for **Part 1 (Exercises 1.1–1.14)** and **Part 2 (Exercises 2.1–2.20)**.
-
-## Project structure
+## Repository structure
 
 ```text
 fullstackopen/
 ├── README.md
 ├── part1/
-│   ├── courseinfo/   # 1.1–1.5
-│   ├── unicafe/      # 1.6–1.11
-│   └── anecdotes/    # 1.12–1.14
-└── part2/
-    ├── courseinfo/   # 2.1–2.5
-    ├── phonebook/    # 2.6–2.17
-    └── countries/    # 2.18–2.20
+│   ├── courseinfo/
+│   ├── unicafe/
+│   └── anecdotes/
+├── part2/
+│   ├── courseinfo/
+│   ├── phonebook/
+│   └── countries/
+└── part3/
+    ├── README.md
+    ├── phonebook-frontend/
+    └── phonebook-backend/
 ```
 
-Each folder is an independent Vite + React application.
+## Part 1 — React basics (Exercises 1.1–1.14)
 
-## Part 1 — React fundamentals (1.1–1.14)
+- `part1/courseinfo` — exercises 1.1–1.5 (final version)
+- `part1/unicafe` — exercises 1.6–1.11 (final version)
+- `part1/anecdotes` — exercises 1.12–1.14 (final version)
 
-| Project | Exercises | Description |
-| --- | --- | --- |
-| `part1/courseinfo` | 1.1–1.5 | Render course information using React components and props. |
-| `part1/unicafe` | 1.6–1.11 | Collect feedback and display statistics. |
-| `part1/anecdotes` | 1.12–1.14 | Display anecdotes, vote, and show the most-voted anecdote. |
-
-## Part 2 — Communicating with the server (2.1–2.20)
-
-| Project | Exercises | Description |
-| --- | --- | --- |
-| `part2/courseinfo` | 2.1–2.5 | Render multiple courses and calculate exercise totals with `map()` and `reduce()`. |
-| `part2/phonebook` | 2.6–2.17 | Add, search, update, and delete contacts; persist data with JSON Server; show success and error notifications. |
-| `part2/countries` | 2.18–2.20 | Search countries, view country details and flags, and display weather for a capital city. |
-
-### Technologies used
-
-- React, JavaScript, JSX, and Vite
-- React hooks (`useState`, `useEffect`)
-- Axios and REST APIs
-- JSON Server for the Phonebook's local backend
-- Helsinki REST Countries API and OpenWeatherMap for the Countries application
-- CSS for basic styling and notifications
-
-## Run a project locally
-
-Make sure [Node.js](https://nodejs.org/) and npm are installed. From the repository root, choose an application:
+Each folder is an independent Vite React application. To run one:
 
 ```bash
 cd part1/unicafe
@@ -56,45 +35,87 @@ npm install
 npm run dev
 ```
 
-For another project, change into its directory and run the same installation and development commands. For example:
+Run the same commands in `courseinfo` and `anecdotes` to test them.
+
+## Part 2 — Communicating with a server (Exercises 2.1–2.20)
+
+- `part2/courseinfo` — exercises 2.1–2.5: rendering course information
+- `part2/phonebook` — exercises 2.6–2.17: forms, filtering, server communication, and notifications
+- `part2/countries` — exercises 2.18–2.20: country data and weather information
+
+These are independent React/Vite applications. Install dependencies and run `npm run dev` inside the application you want to start. The Phonebook uses a JSON Server during Part 2; the Countries project needs a configured weather API key. See each project's configuration for details. Do not commit `.env` files containing keys.
+
+## Part 3 — Node.js, Express, and MongoDB (Exercises 3.1–3.22)
+
+Part 3 continues the Phonebook application with a database-backed API and a React frontend. **Only the Phonebook frontend and backend belong in `part3/`.**
+
+- `part3/phonebook-frontend` — React/Vite interface for the Phonebook
+- `part3/phonebook-backend` — Express REST API, Mongoose model, `mongo.js` command-line database tool, validation, logging, error handling, and ESLint
+
+### Requirements
+
+- Node.js 22.3.0 or newer and npm
+- MongoDB Atlas cluster, database user, and network access configuration
+- A `MONGODB_URI` environment variable for the backend (keep credentials private)
+
+### Run Part 3 locally
+
+In one terminal:
 
 ```bash
-cd part2/courseinfo
+cd part3/phonebook-backend
 npm install
 npm run dev
 ```
 
-### Phonebook: start the backend too
-
-In the `part2/phonebook` directory, run the backend in one terminal:
+In a second terminal:
 
 ```bash
+cd part3/phonebook-frontend
 npm install
-npm run server
-```
-
-Keep that terminal open. Start the React frontend in a second terminal:
-
-```bash
 npm run dev
 ```
 
-The JSON Server API should be available at <http://localhost:3001/persons>. The frontend normally runs at <http://localhost:5173> (or the URL Vite prints).
+The frontend uses Vite's proxy to reach the Express API at `http://localhost:3001/api/persons`. The backend also exposes `http://localhost:3001/info`.
 
-### Countries: optional weather API key
+### Build and serve the full application
 
-The Countries app fetches country information from the University of Helsinki's REST Countries API. To display weather, obtain an API key from [OpenWeatherMap](https://openweathermap.org/api).
+Install dependencies in both folders first. Then, from `part3/phonebook-backend`:
 
-Create `part2/countries/.env` with:
-
-```env
-VITE_OPENWEATHER_API_KEY=your_api_key_here
+```bash
+npm run build:ui
+npm start
 ```
 
-Restart the Vite server after editing `.env`. Do **not** commit `.env` or real API keys. Note that `VITE_` variables are visible in the browser, so this setup is appropriate for the course exercise, not for protecting production secrets.
+Visit `http://localhost:3001` to use the production frontend served by Express.
+
+### Database command-line tool (Exercise 3.12)
+
+See `part3/phonebook-backend/.env.example` and its README for the MongoDB URI template needed by `mongo.js`.
+
+```bash
+cd part3/phonebook-backend
+node mongo.js yourpassword "Anna" "040-1234556"
+node mongo.js yourpassword
+```
+
+Never commit database passwords, `.env` files, or other secrets.
+
+### Linting
+
+```bash
+cd part3/phonebook-backend
+npm run lint
+```
+
+### Deployment (Exercises 3.10, 3.11, 3.21)
+
+Deploy the **backend** to a service such as Render or Fly.io and configure the MongoDB connection string as a secret. Build the React frontend and have Express serve its production files; do not deploy the frontend as a separate service for these exercises.
+
+**Live application URL:** _Add after deployment and verification._
+
+The Part 3 source is prepared for exercises 3.1–3.22; database connectivity, full builds, lint execution, and live deployment must still be verified.
 
 ## Notes
 
-- Do not commit `node_modules/`, build output, or local `.env` files.
-- Review, test, and understand each application before marking its exercises completed in the [Full Stack Open submission system](https://studies.cs.helsinki.fi/stats/courses/fullstackopen).
-- Part 2 is submitted **one part at a time**, so check all exercises you intend to complete before submitting the part.
+Do not commit `node_modules/`, credentials, or local `.env` files. Review, test, and understand your work before marking exercises completed in the course submission system.
