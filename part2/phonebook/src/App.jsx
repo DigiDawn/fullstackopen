@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Persons from './components/Persons.jsx'
+import personService from './services/persons.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,26 +11,63 @@ const App = () => {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-      .then(response => setPersons(response.data))
-      .catch(error => console.error('Failed to load phonebook:', error))
+    personService.getAll()
+      .then(initialPersons => setPersons(initialPersons))
+      .catch(error => {
+        console.error('Failed to load phonebook:', error)
+        window.alert('Could not load contacts. Check that JSON Server is running on port 3001.')
+      })
   }, [])
 
-  const addPerson = event => {
+  const clearForm = () => {
+    setNewName('')
+    setNewNumber('')
+  }
+
+  const addPerson = async event => {
     event.preventDefault()
     const name = newName.trim()
     const number = newNumber.trim()
     if (!name || !number) return
 
-    if (persons.some(person => person.name.toLowerCase() === name.toLowerCase())) {
-      window.alert(`${name} is already added to phonebook`)
-      return
-    }
+    const existingPerson = persons.find(
+      person => person.name.toLowerCase() === name.toLowerCase()
+    )
 
-    const nextId = String(Math.max(0, ...persons.map(person => Number(person.id))) + 1)
-    setPersons(persons.concat({ name, number, id: nextId }))
-    setNewName('')
-    setNewNumber('')
+    try {
+      if (existingPerson) {
+        if (!window.confirm(`${existingPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
+          return
+        }
+        const updatedPerson = await personService.update(existingPerson.id, {
+          ...existingPerson,
+          number
+        })
+        setPersons(current => current.map(person =>
+          person.id === existingPerson.id ? updatedPerson : person
+        ))
+      } else {
+        // Let JSON Server generate the ID; do not calculate it from the local list.
+        const createdPerson = await personService.create({ name, number })
+        setPersons(current => current.concat(createdPerson))
+      }
+      clearForm()
+    } catch (error) {
+      console.error('Failed to save contact:', error)
+      window.alert('Could not save this contact. Please try again.')
+    }
+  }
+
+  const deletePerson = async person => {
+    if (!window.confirm(`Delete ${person.name}?`)) return
+
+    try {
+      await personService.remove(person.id)
+      setPersons(current => current.filter(item => item.id !== person.id))
+    } catch (error) {
+      console.error('Failed to delete contact:', error)
+      window.alert(`Could not delete ${person.name}. Please try again.`)
+    }
   }
 
   const visiblePersons = persons.filter(person =>
@@ -50,7 +87,7 @@ const App = () => {
         onNumberChange={event => setNewNumber(event.target.value)}
       />
       <h3>Numbers</h3>
-      <Persons persons={visiblePersons} />
+      <Persons persons={visiblePersons} onDelete={deletePerson} />
     </div>
   )
 }

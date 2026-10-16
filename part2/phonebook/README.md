@@ -1,27 +1,42 @@
-# Full Stack Open — Phonebook (Exercises 2.6–2.11)
+# Full Stack Open — Phonebook (Exercises 2.6–2.15)
 
-React + Vite Phonebook, with initial contacts fetched from `db.json` using axios and `useEffect`. Previous features (adding contacts locally, duplicate-name warnings, case-insensitive filtering, reusable components) remain.
+A React + Vite phonebook using Axios and JSON Server.
 
-## Run
+## Run locally
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-Start the JSON server in terminal 1:
+In **terminal 1**, start the JSON Server backend:
 
 ```bash
 npm run server
 ```
 
-Verify http://localhost:3001/persons returns JSON.
+The contacts endpoint is http://localhost:3001/persons.
 
-Start Vite in terminal 2:
+In **terminal 2**, start Vite:
 
 ```bash
 npm run dev
 ```
 
-Open the Vite URL (usually http://localhost:5173).
+Visit the local address displayed by Vite (typically http://localhost:5173).
 
-**Note:** Exercise 2.11 only requires fetching initial data from the server. New contacts are stored in React state and will disappear on refresh until the later server-write exercises are implemented.
+## Implemented exercises
+
+- **2.6:** Add contacts with controlled React inputs.
+- **2.7:** Detect duplicate names (extended in 2.15 to offer number replacement).
+- **2.8:** Record phone numbers.
+- **2.9:** Case-insensitive search.
+- **2.10:** Split filter, contact form, and contact list into components.
+- **2.11:** Load initial contacts from JSON Server using Axios and an effect hook.
+- **2.12:** Save new contacts to JSON Server with POST.
+- **2.13:** Move network requests to `src/services/persons.js`.
+- **2.14:** Delete contacts with confirmation and DELETE.
+- **2.15:** Replace an existing contact's phone number with confirmation and PUT.
+
+Changes are saved in `db.json` by JSON Server. Both processes must be running for the app to work. The phonebook keeps client state in the root `App` component.
