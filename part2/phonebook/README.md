@@ -1,20 +1,27 @@
-# Full Stack Open — Phonebook (Exercises 2.6–2.10)
+# Full Stack Open — Phonebook (Exercises 2.6–2.11)
 
-A React + Vite phonebook that supports adding names and numbers, duplicate-name warnings, case-insensitive filtering, and three extracted components (`Filter`, `PersonForm`, `Persons`). All state and event handlers remain in `App.jsx`.
+React + Vite Phonebook, with initial contacts fetched from `db.json` using axios and `useEffect`. Previous features (adding contacts locally, duplicate-name warnings, case-insensitive filtering, reusable components) remain.
 
 ## Run
 
 ```bash
 npm install
+```
+
+Start the JSON server in terminal 1:
+
+```bash
+npm run server
+```
+
+Verify http://localhost:3001/persons returns JSON.
+
+Start Vite in terminal 2:
+
+```bash
 npm run dev
 ```
 
-## Production build
+Open the Vite URL (usually http://localhost:5173).
 
-```bash
-npm run build
-```
-
-## Submission
-
-Push the `phonebook` directory to GitHub. Submit the link and mark exercises 2.6–2.10 complete in the Full Stack Open submission system when ready to submit **all of Part 2**. Do not commit `node_modules`.
+**Note:** Exercise 2.11 only requires fetching initial data from the server. New contacts are stored in React state and will disappear on refresh until the later server-write exercises are implemented.

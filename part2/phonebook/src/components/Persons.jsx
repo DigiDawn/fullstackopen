@@ -1,4 +1,5 @@
 import React from 'react'
+
 const Persons = ({ persons }) => (
   <div>
     {persons.map(person => (
