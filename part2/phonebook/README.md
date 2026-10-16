@@ -1,42 +1,32 @@
-# Full Stack Open — Phonebook (Exercises 2.6–2.15)
+# Full Stack Open — Phonebook (Exercises 2.6–2.17)
 
-A React + Vite phonebook using Axios and JSON Server.
+React/Vite phonebook with a JSON Server backend.
 
-## Run locally
+## Start
 
-Install dependencies:
-
-```bash
+```sh
 npm install
-```
-
-In **terminal 1**, start the JSON Server backend:
-
-```bash
 npm run server
 ```
 
-The contacts endpoint is http://localhost:3001/persons.
+Keep the backend running. In another terminal:
 
-In **terminal 2**, start Vite:
-
-```bash
+```sh
 npm run dev
 ```
 
-Visit the local address displayed by Vite (typically http://localhost:5173).
+The backend is at http://localhost:3001/persons and the frontend is typically http://localhost:5173.
 
-## Implemented exercises
+## Exercises 2.16–2.17
 
-- **2.6:** Add contacts with controlled React inputs.
-- **2.7:** Detect duplicate names (extended in 2.15 to offer number replacement).
-- **2.8:** Record phone numbers.
-- **2.9:** Case-insensitive search.
-- **2.10:** Split filter, contact form, and contact list into components.
-- **2.11:** Load initial contacts from JSON Server using Axios and an effect hook.
-- **2.12:** Save new contacts to JSON Server with POST.
-- **2.13:** Move network requests to `src/services/persons.js`.
-- **2.14:** Delete contacts with confirmation and DELETE.
-- **2.15:** Replace an existing contact's phone number with confirmation and PUT.
+- Success notifications appear for five seconds after adding a person or updating a number.
+- Error notifications have distinct red styling.
+- If a person was deleted in another browser, updating their number catches HTTP 404, removes the stale entry from the local list, and shows an error notification.
+- Errors are handled so no unhandled promise rejection is thrown.
+- Existing CRUD and search features are preserved.
 
-Changes are saved in `db.json` by JSON Server. Both processes must be running for the app to work. The phonebook keeps client state in the root `App` component.
+## Test the concurrent-edit scenario
+
+Open the app in two browsers. Delete a contact in browser A, then attempt to change its number in browser B. Browser B should show a red notification and remove the stale contact.
+
+Do not commit node_modules.

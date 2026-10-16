@@ -1,5 +1,3 @@
-import React from "react"
-
 const PersonForm = ({ onSubmit, newName, onNameChange, newNumber, onNumberChange }) => (
   <form onSubmit={onSubmit}>
     <div>name: <input value={newName} onChange={onNameChange} /></div>
